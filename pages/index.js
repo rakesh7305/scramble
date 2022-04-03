@@ -286,6 +286,7 @@ export default function Scramble(props) {
 
           <Grid container spacing={2}
             direction="row"
+            wrap="nowrap"
             justifyContent="center"
             alignItems="center"
             textAlign="center" >
