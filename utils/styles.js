@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
   brand: {
     fontWeight: 'bold',
     fontSize: '1.5rem',
+    color: 'white'
   },
   grow: {
     flexGrow: 1,
