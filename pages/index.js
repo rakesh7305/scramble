@@ -301,7 +301,7 @@ export default function Scramble(props) {
                     inputProps={{
                       readOnly: true,
                       style: {
-                        width: "2ch",
+                        width: "1.5ch",
                         wrap: "nowrap",
                         fontSize: 30,
                         // background: "white",
@@ -372,7 +372,7 @@ export default function Scramble(props) {
                       readOnly: false,
                       maxLength: 1,
                       style: {
-                        width: "2ch",
+                        width: "1.5ch",
                         wrap: "nowrap",
                         fontSize: 30,
                         background: "lightgrey",
