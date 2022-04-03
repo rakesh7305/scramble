@@ -301,6 +301,7 @@ export default function Scramble(props) {
                       readOnly: true,
                       style: {
                         width: "2ch",
+                        wrap: "nowrap",
                         fontSize: 30,
                         // background: "white",
                         background: "lightgrey",
@@ -371,6 +372,7 @@ export default function Scramble(props) {
                       maxLength: 1,
                       style: {
                         width: "2ch",
+                        wrap: "nowrap",
                         fontSize: 30,
                         background: "lightgrey",
                         color: "#470404",
