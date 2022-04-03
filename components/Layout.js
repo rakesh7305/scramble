@@ -93,7 +93,7 @@ export default function Layout({ title, description, children }) {
   return (
     <div>
       <Head>
-        <title>{title ? `${title} - ELMCRABS` : 'ELMCRABS'}</title>
+        <title>{title ? `${title} - MELCRABS` : 'MELCRABS'}</title>
         {description && <meta name="description" content={description}></meta>}
       </Head>
       <ThemeProvider theme={theme}>
@@ -109,7 +109,7 @@ export default function Layout({ title, description, children }) {
             >
               <Grid item
               >
-                <Typography className={classes.brand}>ELMCRABS</Typography>
+                <Typography className={classes.brand}>MELCRABS</Typography>
               </Grid>
             </Grid>
 
