@@ -55,6 +55,7 @@ export default function Scramble(props) {
   const { scrambleGame } = props;
 
   const word = Array.from(scrambleGame.clue);
+  // const word = Array.from("12345678");
 
   // const classes = useStyles();
 
@@ -63,6 +64,7 @@ export default function Scramble(props) {
   const allValues = useRef([]);
 
   const newWord = Array.from(scrambleGame.scrambledClue);
+  //const newWord = Array.from("12345678");
 
   var shuffledWord_init = [];
   for (var i = 0; i < newWord.length; i++) {
@@ -303,7 +305,7 @@ export default function Scramble(props) {
     <Layout title="Scramble">
       <Grid container justifyContent="center"
         alignItems="center"
-        style={{ minHeight: "70vh" }}
+        style={{ minHeight: "70vh", m: 0}}
       >
         <div>
           <SuccessDialog
@@ -311,34 +313,31 @@ export default function Scramble(props) {
             handler={successDialogHandler}
           >
           </SuccessDialog>
-          {/* <StatisticDialog
-            show={showStatModal}
-            handler={statisticDialogHandler}
-          >
-          </StatisticDialog> */}
+       
         </div>
-        <Grid container
+        {/* <Grid container
           // direction="row"
           display="flex"
           justifyContent="flex-end"
           alignItems="center"
         // style={{ minHeight: "5vh" }}
         >
-          {/* <Grid item>
+          <Grid item>
             <IconButton
               aria-label="stat"
               onClick={() => setShowStatisticModal(true)}
             >
               <InsertChartOutlinedIcon />
             </IconButton>
-          </Grid> */}
+          </Grid>
 
-        </Grid>
+        </Grid> */}
         <Box
           component="form"
           sx={{
-            p: 2, border: '1px solid grey',
+            p: 1, border: '1px solid grey',
             borderRadius: 10,
+            m: 0,
           }}
           noValidate
           autoComplete="off"
@@ -367,7 +366,7 @@ export default function Scramble(props) {
                       maxLength: 1,
                       style: {
                         width: "2ch",
-                        fontSize: 30,
+                        fontSize: 27,
                         background: "lightgrey",
                         color: "#470404",
                         fontWeight: "bold",
@@ -375,7 +374,7 @@ export default function Scramble(props) {
                         // pl: 20,
                         textTransform: "uppercase",
                         pattern: "[a-z]",
-                        border: "2px solid white",
+                        border: "1px solid white",
                       }
                     }}
                   />
@@ -414,8 +413,8 @@ export default function Scramble(props) {
                       readOnly: true,
                       style: {
                         width: "2ch",
-                        wrap: "nowrap",
-                        fontSize: 30,
+                        // wrap: "nowrap",
+                        fontSize: 27,
                         // background: "white",
                         background: "lightgrey",
                         color: "black",
