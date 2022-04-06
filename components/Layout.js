@@ -43,6 +43,11 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import { useEffect } from 'react';
+import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import StatisticDialog from "../components/StatisticDialog";
+import HelpDialog from "../components/HelpDialog";
+
 
 export default function Layout({ title, description, children }) {
   const router = useRouter();
@@ -77,6 +82,8 @@ export default function Layout({ title, description, children }) {
 
 
   const [categories, setCategories] = useState([]);
+  const [showStatModal, setShowStatisticModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
 
   const darkModeChangeHandler = () => {
@@ -89,7 +96,12 @@ export default function Layout({ title, description, children }) {
     setAnchorEl(e.currentTarget);
   };
 
-
+  const statisticDialogHandler = () => {
+    setShowStatisticModal(false);
+  };
+  const helpDialogHandler = () => {
+    setShowHelpModal(false);
+  };
   return (
     <div>
       <Head>
@@ -100,27 +112,62 @@ export default function Layout({ title, description, children }) {
         <CssBaseline />
         <AppBar position="static" className={classes.navbar}>
           <Toolbar className={classes.toolbar}>
-        
+          <div>
+          
+          <StatisticDialog
+            show={showStatModal}
+            handler={statisticDialogHandler}
+          >
+          </StatisticDialog>
+          <HelpDialog
+            show={showHelpModal}
+            handler={helpDialogHandler}
+          >
+          </HelpDialog>
+        </div>
 
             <Grid container
               direction="row"
               justifyContent="center"
               alignItems="center"
             >
-              <Grid item
-              >
-                <Typography className={classes.brand}>MELCRABS</Typography>
+              <Grid item 
+               xs style={{ display: "flex", justifyContent: "flex-start" }}> 
+
+                <Typography className={classes.brand}> MELCRABS</Typography>
+              </Grid>
+                    <Grid item>
+            <IconButton
+              aria-label="Help"
+              onClick={() => setShowHelpModal(true)}
+              style={{ color: 'white' }}
+            >
+              <HelpOutlineIcon />
+            </IconButton>
+          </Grid>
+              <Grid item>
+            <IconButton
+              aria-label="stat"
+              onClick={() => setShowStatisticModal(true)}
+              style={{ color: 'white' }}
+            >
+              <InsertChartOutlinedIcon />
+            </IconButton>
+          </Grid>
+              <Grid item >
+              {/* xs style={{ display: "flex", justifyContent: "flex-end" }}>  */}
+                <div>
+                  <Switch
+                    checked={darkMode}
+                    onChange={darkModeChangeHandler}
+                  ></Switch>
+                </div>
               </Grid>
             </Grid>
 
 
 
-            <div>
-              <Switch
-                checked={darkMode}
-                onChange={darkModeChangeHandler}
-              ></Switch>
-            </div>
+
           </Toolbar>
         </AppBar>
         <Container className={classes.main}>{children}</Container>
