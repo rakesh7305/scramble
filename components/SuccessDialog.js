@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   // List,
   // ListItem,
-  // Typography,
+  Typography,
   // TextField,
   Button,
   // Link,
@@ -45,7 +45,9 @@ export default function SuccessDialog(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            I will keep track of your success
+            <Typography variant= 'h6' >
+          Click the stats icon to track your success.
+          </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
