@@ -104,16 +104,35 @@ export default function Scramble(props) {
       document.getElementById((item.id).toString()).style.color = 'black';
     });
 
-    shuffledWord.forEach((item) => {
-      for (let val in updatedAnswer) {
-        if (item.letter === updatedAnswer[val]) {
-          item.checked = true;
-          item.responseLetterId = val;
-          document.getElementById((item.id).toString()).style.background = '#00e600';
-          document.getElementById((item.id).toString()).style.color = 'white';
+    // shuffledWord.forEach((item) => {
+    //   let found = false;
+
+    //   for (let val in updatedAnswer) {
+    //     if (item.letter === updatedAnswer[val] && !found) {
+    //       item.checked = true;
+    //       found = true;
+    //       item.responseLetterId = val;
+    //       document.getElementById((item.id).toString()).style.background = '#00e600';
+    //       document.getElementById((item.id).toString()).style.color = 'white';
+    //     }
+    //   }
+    // });
+    for (let i in updatedAnswer) {
+      let found = false;
+      for (let x in shuffledWord) { 
+        if (shuffledWord[x].letter === updatedAnswer[i] && !found && !shuffledWord[x].checked ) {
+          shuffledWord[x].checked = true;
+          found = true;
+          shuffledWord[x].responseLetterId = i;
+          document.getElementById(shuffledWord[x].id).style.background = '#00e600';
+          document.getElementById(shuffledWord[x].id).style.color = 'white';
         }
       }
-    });
+    }
+
+
+
+
 
   }
 
@@ -173,16 +192,16 @@ export default function Scramble(props) {
     allValues.current.forEach((item) => {
       if (item.value === "" && !found && index > 0) {
         found = true;
-        allValues.current[index-1].value = '';
+        allValues.current[index - 1].value = '';
         updateAllValues();
-        allValues.current[index-1].focus();
+        allValues.current[index - 1].focus();
         // e.target.style.background = '#00e600';
         // e.target.style.color = 'white';
       }
-      else if(index === allValues.current.length - 1 && !found) {
-        allValues.current[allValues.current.length - 1 ].value = '';
+      else if (index === allValues.current.length - 1 && !found) {
+        allValues.current[allValues.current.length - 1].value = '';
         updateAllValues();
-        allValues.current[allValues.current.length - 1 ].focus();
+        allValues.current[allValues.current.length - 1].focus();
       }
       index++;
     });
@@ -313,7 +332,7 @@ export default function Scramble(props) {
               <InsertChartOutlinedIcon />
             </IconButton>
           </Grid> */}
-   
+
         </Grid>
         <Box
           component="form"
