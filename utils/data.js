@@ -346,30 +346,31 @@ const data = {
     },
   ],
   scrambleGame: [
+    
     {
       gameNo: 1,
-      gameDate: new Date("2022-03-14"),
+      gameDate: new Date("2022-04-05"),
       category: 'Science',
-      clue: 'PIDAY',
-      scrambledClue: 'DPYAI',
+      clue: 'DENSITY',
+      scrambledClue: 'ETYDSNI',
     },
     {
       gameNo: 2,
-      gameDate: new Date("2022-03-15"),
+      gameDate: new Date("2022-04-06"),
       category: 'Geography',
       clue: 'EVEREST',
       scrambledClue: 'REEVETS',
     },
     {
       gameNo: 3,
-      gameDate: new Date("2022-03-16"),
+      gameDate: new Date("2022-04-07"),
       category: 'MATH',
       clue: 'PARABOLA',
       scrambledClue: 'ALOBAPRA',
     },
     {
       gameNo: 4,
-      gameDate: new Date("2022-03-17"),
+      gameDate: new Date("2022-04-08"),
       category: 'LEADER',
       clue: 'CHURCHILL',
       scrambledClue: 'CRULILHCH',
