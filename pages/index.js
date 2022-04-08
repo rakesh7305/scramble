@@ -342,6 +342,7 @@ export default function Scramble(props) {
           noValidate
           autoComplete="off"
           bgcolor="white"
+          minWidth: 300
         >
           <Grid container spacing={2}
             direction="row"
