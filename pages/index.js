@@ -31,7 +31,7 @@ export default function Scramble(props) {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const { dispatch } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const [showModal, setShowModal] = useState(false);
   // const [showStatModal, setShowStatisticModal] = useState(false);
   const [seconds, setSeconds] = useState(0);
@@ -56,6 +56,8 @@ export default function Scramble(props) {
 
   const word = Array.from(scrambleGame.clue);
   // const word = Array.from("12345678");
+
+  const colorMode = state.darkMode;
 
   // const classes = useStyles();
 
@@ -231,6 +233,10 @@ export default function Scramble(props) {
   const onClickShuffledWordHandler = (e) => {
     const letterValue = (e.target.value).toUpperCase();
     console.log("on click event: " + letterValue);
+    const i = parseInt(e.target.id);
+    console.log("on click event: " + shuffledWord[i - 100].checked);
+    console.log("on click event: " + e.target.style.backgroundColor);
+
 
     // allValues.current.map((item, index) => (
     //   if (item.value === "") {
@@ -240,18 +246,20 @@ export default function Scramble(props) {
     // )
     let index = 0;
     let found = false;
+    if (e.target.style.backgroundColor === 'lightgrey') {
+      allValues.current.forEach((item) => {
+        if (item.value === "" && !found) {
+          item.value = letterValue;
+          shuffledWord[i - 100].checked = true;
+          e.target.style.background = '#00e600';
+          e.target.style.color = 'white';
+          found = true;
+        }
+        index++;
 
-    allValues.current.forEach((item) => {
-      if (item.value === "" && !found) {
-        item.value = letterValue;
-        e.target.style.background = '#00e600';
-        e.target.style.color = 'white';
-        found = true;
-      }
-      index++;
-
-    });
-
+      });
+    }
+    updateAllValues();
   };
 
   const onKeyUpHandler = (e) => {
@@ -305,7 +313,7 @@ export default function Scramble(props) {
     <Layout title="Scramble">
       <Grid container justifyContent="center"
         alignItems="center"
-        style={{ minHeight: "70vh", m: 0}}
+        style={{ minHeight: "70vh"}}
       >
         <div>
           <SuccessDialog
@@ -335,14 +343,14 @@ export default function Scramble(props) {
         <Box
           component="form"
           sx={{
-            p: 1, border: '1px solid grey',
+            p: 2, border: '1px solid grey',
             borderRadius: 10,
             m: 0,
             minWidth: 325,
           }}
           noValidate
           autoComplete="off"
-          bgcolor="white"
+          bgcolor={colorMode ? 'black' : 'white'}
         >
           <Grid container spacing={2}
             direction="row"
@@ -366,11 +374,11 @@ export default function Scramble(props) {
                       readOnly: false,
                       maxLength: 1,
                       style: {
+                        background: colorMode ? 'black' : 'lightgrey',
+                        color: colorMode ? 'white' : '#470404',
                         width: "2ch",
                         wrap: "nowrap",
                         fontSize: 27,
-                        background: "lightgrey",
-                        color: "#470404",
                         fontWeight: "bold",
                         textAlign: "center",
                         // pl: 20,
@@ -414,12 +422,12 @@ export default function Scramble(props) {
                     inputProps={{
                       readOnly: true,
                       style: {
+                        background: colorMode ? 'black' : 'lightgrey',
+                        color: colorMode ? 'white' : 'black',
                         width: "2ch",
                         wrap: "nowrap",
                         fontSize: 27,
                         // background: "white",
-                        background: "lightgrey",
-                        color: "black",
                         fontWeight: "bold",
                         textAlign: "center",
                         border: "1px solid white",
