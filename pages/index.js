@@ -1,10 +1,10 @@
 import {
   Typography,
-  TextField,
+  // TextField,
   Input,
   Grid,
   Box,
-  IconButton,
+  // IconButton,
   Button,
 } from '@material-ui/core';
 import React, { useContext, useEffect, useState, useRef } from 'react';
@@ -16,8 +16,8 @@ import { useSnackbar } from 'notistack';
 import db from '../utils/db';
 import ScrambleGame from '../models/ScrambleGame';
 import SuccessDialog from "../components/SuccessDialog";
-import StatisticDialog from "../components/StatisticDialog";
-import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
+// import StatisticDialog from "../components/StatisticDialog";
+// import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
@@ -34,23 +34,47 @@ export default function Scramble(props) {
   const { state, dispatch } = useContext(Store);
   const [showModal, setShowModal] = useState(false);
   // const [showStatModal, setShowStatisticModal] = useState(false);
-  const [seconds, setSeconds] = useState(0);
+  const timerSet = 300;
+  const [seconds, setSeconds] = useState(timerSet);
+  const [isActive, setIsActive] = useState(true);
   //const [timer, setTimer] = useState();
 
+  // let timer = null;
+  // useEffect(() => {
+  //   document.getElementById("0").focus();
+
+  //   timer = setInterval(() => {
+  //     setSeconds(prevSeconds => prevSeconds + 1);
+  //   }, 1000);
+  //   //setTimer(timer);
+
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+
+  // }, []);
   let timer = null;
+
   useEffect(() => {
-    document.getElementById("0").focus();
+    // document.getElementById("0").focus();
+    shiftFocus()
 
-    timer = setInterval(() => {
-      setSeconds(prevSeconds => prevSeconds + 1);
-    }, 1000);
-    //setTimer(timer);
-
-    return () => {
+    if (seconds > 0) {
+      timer = setInterval(() => {
+        setSeconds(seconds => seconds - 1);
+      }, 1000);
+    } else {
+      // console.log("time is up " + seconds)
+      document.getElementById('message').innerText = "Time's Up :)";
       clearInterval(timer);
-    };
+      provideCorrectAnswer();
+      disableAnswer();
+      // setIsActive(false);
+    }
+    return () => clearInterval(timer);
+  }, [seconds]);
+// }, [seconds, isActive]);
 
-  }, []);
 
   const { scrambleGame } = props;
 
@@ -79,7 +103,7 @@ export default function Scramble(props) {
   const saveStat = () => {
     const data = {
       gameDate: scrambleGame.gameNo, //moment().format("DD-MMM HH:mm"), //Date.now(),
-      time: seconds,
+      time: timerSet - seconds,
     };
     dispatch({ type: 'SCRAMBLE_ADD_STAT', payload: data });
   };
@@ -94,10 +118,39 @@ export default function Scramble(props) {
 
   function disableAnswer() {
 
-    for (var i = 0; i < newWord.length; i++) {
+    // for (var i = 0; i < word.length; i++) {
+    //   var id = (i).toString();
+    //   var id100 = (i + 100).toString();
+    //   document.getElementById(id).disabled = true;
+    //   document.getElementById(id100).disabled = true;
+    //   // document.getElementById('EntrBttn').disabled = true;
+    //   // document.getElementById('BkspBttn').disabled = true;
+
+
+    // }
+    setIsActive(false);
+
+  }
+
+  function provideCorrectAnswer() {
+
+    for (var i = 0; i < word.length; i++) {
       var id = (i).toString();
-      document.getElementById(id).disabled = true;
+      document.getElementById(id).value = word[i];
+      document.getElementById(id).style.background = 'blue';
+      document.getElementById(id).style.color = 'white';
     }
+  }
+  function shiftFocus() {
+    let index = 0;
+      let found = false;
+      allValues.current.forEach((item) => {
+        if (item.value === "" && !found && index < allValues.current.length) {
+          found = true;
+          allValues.current[index].focus();
+        }
+        index++;
+      });
   }
 
   function checkLetter(updatedAnswer) {
@@ -123,8 +176,8 @@ export default function Scramble(props) {
     // });
     for (let i in updatedAnswer) {
       let found = false;
-      for (let x in shuffledWord) { 
-        if (shuffledWord[x].letter === updatedAnswer[i] && !found && !shuffledWord[x].checked ) {
+      for (let x in shuffledWord) {
+        if (shuffledWord[x].letter === updatedAnswer[i] && !found && !shuffledWord[x].checked) {
           shuffledWord[x].checked = true;
           found = true;
           shuffledWord[x].responseLetterId = i;
@@ -142,16 +195,18 @@ export default function Scramble(props) {
 
   function updateAllValues() {
 
-    const userAnswer = Array.from({ length: allValues.current.length }, () => "");
+    if (isActive) {
+      const userAnswer = Array.from({ length: allValues.current.length }, () => "");
 
-    allValues.current.map((item, index) => (
-      userAnswer[index] = (item.value).toUpperCase()
-    )
-    );
+      allValues.current.map((item, index) => (
+        userAnswer[index] = (item.value).toUpperCase()
+      )
+      );
 
-    const updatedAnswer = userAnswer;
+      const updatedAnswer = userAnswer;
 
-    checkLetter(updatedAnswer);
+      checkLetter(updatedAnswer);
+    }
   }
 
   // function updateAllValues(val, index) {
@@ -170,6 +225,7 @@ export default function Scramble(props) {
   // }
 
   function checkAnswer() {
+    if(isActive) {
     const userAnswer = Array.from({ length: allValues.current.length }, () => "");
 
     allValues.current.map((item, index) => (userAnswer[index] = (item.value).toUpperCase()));
@@ -180,39 +236,43 @@ export default function Scramble(props) {
       disableAnswer();
       const answerTime = (Math.floor(seconds / 60) < 10 ? "0" + (Math.floor(seconds / 60)).toString() : Math.floor(seconds / 60)) + ":" + (seconds % 60 < 10 ? "0" + (seconds % 60).toString() : seconds % 60);
       document.getElementById('clock').innerText = answerTime;
-      const msg = "CORRECT !! " + seconds + " seconds";
+      const msg = "CORRECT !! " + (timerSet - seconds) + " seconds";
       enqueueSnackbar(msg, { variant: 'success' });
-      document.getElementById('message').innerText = "You got it !";
+      document.getElementById('message').innerText = "You got it in " + (timerSet - seconds) + " seconds";
       saveStat();
       setShowModal(true);
     } else {
       enqueueSnackbar("wrong", { variant: 'error' });
     }
   }
+  }
 
   function clickBackspace() {
-    let index = 0;
-    let found = false;
-    allValues.current.forEach((item) => {
-      if (item.value === "" && !found && index > 0) {
-        found = true;
-        allValues.current[index - 1].value = '';
-        updateAllValues();
-        allValues.current[index - 1].focus();
-        // e.target.style.background = '#00e600';
-        // e.target.style.color = 'white';
-      }
-      else if (index === allValues.current.length - 1 && !found) {
-        allValues.current[allValues.current.length - 1].value = '';
-        updateAllValues();
-        allValues.current[allValues.current.length - 1].focus();
-      }
-      index++;
-    });
+    if (isActive) {
+      let index = 0;
+      let found = false;
+      allValues.current.forEach((item) => {
+        if (item.value === "" && !found && index > 0) {
+          found = true;
+          allValues.current[index - 1].value = '';
+          updateAllValues();
+          allValues.current[index - 1].focus();
+          // e.target.style.background = '#00e600';
+          // e.target.style.color = 'white';
+        }
+        else if (index === allValues.current.length - 1 && !found) {
+          allValues.current[allValues.current.length - 1].value = '';
+          updateAllValues();
+          allValues.current[allValues.current.length - 1].focus();
+        }
+        index++;
+      });
+    }
   };
 
 
   const ansChangeHandler = (e) => {
+    if(isActive) {
     const letterValue = (e.target.value).toUpperCase();
 
     const currentId = parseInt(e.target.id);
@@ -228,6 +288,7 @@ export default function Scramble(props) {
       // updateAllValues(letterValue, currentId);
       updateAllValues();
     }
+  }
   };
 
   const onClickShuffledWordHandler = (e) => {
@@ -264,29 +325,30 @@ export default function Scramble(props) {
 
   const onKeyUpHandler = (e) => {
     // console.log("on key up event: " + event.which);
-    if (event.which === 8) {
-      const currentId = event.target.id;
-      //checkLetter();
-      event.target.value = "";
-      const prevId = (currentId - 1).toString();
-      if (currentId > 0) {
-        //allValues.current[index-1].focus()
-        document.getElementById(prevId).focus();
-        //document.getElementById(prevId).select();
-        // updateAllValues("", currentId);
-        updateAllValues();
+    if (isActive) {
+      if (event.which === 8) {
+        const currentId = event.target.id;
+        //checkLetter();
+        event.target.value = "";
+        const prevId = (currentId - 1).toString();
+        if (currentId > 0) {
+          //allValues.current[index-1].focus()
+          document.getElementById(prevId).focus();
+          //document.getElementById(prevId).select();
+          // updateAllValues("", currentId);
+          updateAllValues();
 
-      } else if (currentId === 0) {
-        console.log("backspae " + currentId + " " + allValues.current[currentId].value)
-        // updateAllValues("", currentId);
-        updateAllValues();
+        } else if (currentId === 0) {
+          console.log("backspae " + currentId + " " + allValues.current[currentId].value)
+          // updateAllValues("", currentId);
+          updateAllValues();
 
+        }
+      }
+      else if (event.which === 13) {
+        checkAnswer();
       }
     }
-    else if (event.which === 13) {
-      checkAnswer();
-    }
-
   };
 
 
@@ -313,7 +375,7 @@ export default function Scramble(props) {
     <Layout title="Scramble">
       <Grid container justifyContent="center"
         alignItems="center"
-        style={{ minHeight: "70vh"}}
+        style={{ minHeight: "70vh" }}
       >
         <div>
           <SuccessDialog
@@ -321,7 +383,6 @@ export default function Scramble(props) {
             handler={successDialogHandler}
           >
           </SuccessDialog>
-       
         </div>
         {/* <Grid container
           // direction="row"
@@ -367,6 +428,8 @@ export default function Scramble(props) {
                     inputRef={el => allValues.current[index] = el}
                     //ref={allValues[index]}
                     variant="outlined"
+                    disabled={!isActive}
+                    // disablePointerEvents={true}
                     autoFocus
                     onChange={ansChangeHandler}
                     onKeyUp={onKeyUpHandler}
@@ -418,6 +481,8 @@ export default function Scramble(props) {
                     key={item.id}
                     defaultValue={item.letter}
                     variant="outlined"
+                    disabled={!isActive}
+                    // disablePointerEvents={true}
                     onClick={onClickShuffledWordHandler}
                     inputProps={{
                       readOnly: true,
@@ -466,14 +531,14 @@ export default function Scramble(props) {
             <Grid item xs style={{ display: "flex", justifyContent: "flex-start" }}
               onClick={checkAnswer}
             >
-              <Button variant="contained" color="secondary" size="small" startIcon={<KeyboardReturnIcon />}>
+              <Button disabled={!isActive} variant="contained" color="secondary" size="small" startIcon={<KeyboardReturnIcon />}>
                 ENTER
               </Button>
             </Grid>
             <Grid item xs style={{ display: "flex", justifyContent: "flex-end" }}
               onClick={clickBackspace}
             >
-              <Button variant="contained" color="secondary" size="small" startIcon={<BackspaceIcon />}>
+              <Button disabled={!isActive} variant="contained" color="secondary" size="small" startIcon={<BackspaceIcon />}>
                 BKSP
               </Button>
             </Grid>
@@ -504,4 +569,3 @@ export async function getServerSideProps() {
     },
   };
 }
-
