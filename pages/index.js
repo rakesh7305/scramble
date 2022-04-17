@@ -56,24 +56,29 @@ export default function Scramble(props) {
   let timer = null;
 
   useEffect(() => {
-    // document.getElementById("0").focus();
-    shiftFocus()
+    // if (!playedGame()) {
+      shiftFocus()
 
-    if (seconds > 0) {
-      timer = setInterval(() => {
-        setSeconds(seconds => seconds - 1);
-      }, 1000);
-    } else {
-      // console.log("time is up " + seconds)
-      document.getElementById('message').innerText = "Time's Up :)";
-      clearInterval(timer);
-      provideCorrectAnswer();
-      disableAnswer();
-      // setIsActive(false);
-    }
-    return () => clearInterval(timer);
+      if (seconds > 0) {
+        timer = setInterval(() => {
+          setSeconds(seconds => seconds - 1);
+        }, 1000);
+      } else {
+        // console.log("time is up " + seconds)
+        document.getElementById('message').innerText = "Time's Up :)";
+        clearInterval(timer);
+        provideCorrectAnswer();
+        disableAnswer();
+        // setIsActive(false);
+      }
+      return () => clearInterval(timer);
+    // }
+    // else {
+    //   disableAnswer();
+    //   alert("You have already played this Game. Please check back tomorrow");
+    // }
   }, [seconds]);
-// }, [seconds, isActive]);
+  // }, [seconds, isActive]);
 
 
   const { scrambleGame } = props;
@@ -99,10 +104,23 @@ export default function Scramble(props) {
   }
   const shuffledWord = shuffledWord_init;
 
-
+  // const playedGame = () => {
+  //   const scrambleStat = state.scrambleStat;
+  //   const gameNo = scrambleGame['gameNo'];
+  //   const item = scrambleStat.find(item => item.gameNo == gameNo);
+  //   if (item) {
+  //     // alert("You have already Played the Game. Please check tomorrow");
+  //     // disableAnswer();
+  //     return true;
+  //   }
+  //   else {
+  //     return false;
+  //   }
+  // }
+  
   const saveStat = () => {
     const data = {
-      gameDate: scrambleGame.gameNo, //moment().format("DD-MMM HH:mm"), //Date.now(),
+      gameNo: scrambleGame.gameNo, //moment().format("DD-MMM HH:mm"), //Date.now(),
       time: timerSet - seconds,
     };
     dispatch({ type: 'SCRAMBLE_ADD_STAT', payload: data });
@@ -143,14 +161,14 @@ export default function Scramble(props) {
   }
   function shiftFocus() {
     let index = 0;
-      let found = false;
-      allValues.current.forEach((item) => {
-        if (item.value === "" && !found && index < allValues.current.length) {
-          found = true;
-          allValues.current[index].focus();
-        }
-        index++;
-      });
+    let found = false;
+    allValues.current.forEach((item) => {
+      if (item.value === "" && !found && index < allValues.current.length) {
+        found = true;
+        allValues.current[index].focus();
+      }
+      index++;
+    });
   }
 
   function checkLetter(updatedAnswer) {
@@ -225,26 +243,26 @@ export default function Scramble(props) {
   // }
 
   function checkAnswer() {
-    if(isActive) {
-    const userAnswer = Array.from({ length: allValues.current.length }, () => "");
+    if (isActive) {
+      const userAnswer = Array.from({ length: allValues.current.length }, () => "");
 
-    allValues.current.map((item, index) => (userAnswer[index] = (item.value).toUpperCase()));
-    const userResponse = userAnswer.join("");
+      allValues.current.map((item, index) => (userAnswer[index] = (item.value).toUpperCase()));
+      const userResponse = userAnswer.join("");
 
-    if (rightAnswer.localeCompare(userResponse.toUpperCase()) === 0) {
-      clearInterval(timer);
-      disableAnswer();
-      const answerTime = (Math.floor(seconds / 60) < 10 ? "0" + (Math.floor(seconds / 60)).toString() : Math.floor(seconds / 60)) + ":" + (seconds % 60 < 10 ? "0" + (seconds % 60).toString() : seconds % 60);
-      document.getElementById('clock').innerText = answerTime;
-      const msg = "CORRECT !! " + (timerSet - seconds) + " seconds";
-      enqueueSnackbar(msg, { variant: 'success' });
-      document.getElementById('message').innerText = "You got it in " + (timerSet - seconds) + " seconds";
-      saveStat();
-      setShowModal(true);
-    } else {
-      enqueueSnackbar("wrong", { variant: 'error' });
+      if (rightAnswer.localeCompare(userResponse.toUpperCase()) === 0) {
+        clearInterval(timer);
+        disableAnswer();
+        const answerTime = (Math.floor(seconds / 60) < 10 ? "0" + (Math.floor(seconds / 60)).toString() : Math.floor(seconds / 60)) + ":" + (seconds % 60 < 10 ? "0" + (seconds % 60).toString() : seconds % 60);
+        document.getElementById('clock').innerText = answerTime;
+        const msg = "CORRECT !! " + (timerSet - seconds) + " seconds";
+        enqueueSnackbar(msg, { variant: 'success' });
+        document.getElementById('message').innerText = "You got it in " + (timerSet - seconds) + " seconds";
+        saveStat();
+        setShowModal(true);
+      } else {
+        enqueueSnackbar("wrong", { variant: 'error' });
+      }
     }
-  }
   }
 
   function clickBackspace() {
@@ -272,23 +290,23 @@ export default function Scramble(props) {
 
 
   const ansChangeHandler = (e) => {
-    if(isActive) {
-    const letterValue = (e.target.value).toUpperCase();
+    if (isActive) {
+      const letterValue = (e.target.value).toUpperCase();
 
-    const currentId = parseInt(e.target.id);
+      const currentId = parseInt(e.target.id);
 
-    if (!letterValue.match(/[A-Z]/)) {
-      e.target.value = "";
-      // updateAllValues(letterValue, currentId);
-      updateAllValues();
-    } else {
-      if (currentId < word.length - 1) {
-        document.getElementById((currentId + 1).toString()).focus();
+      if (!letterValue.match(/[A-Z]/)) {
+        e.target.value = "";
+        // updateAllValues(letterValue, currentId);
+        updateAllValues();
+      } else {
+        if (currentId < word.length - 1) {
+          document.getElementById((currentId + 1).toString()).focus();
+        }
+        // updateAllValues(letterValue, currentId);
+        updateAllValues();
       }
-      // updateAllValues(letterValue, currentId);
-      updateAllValues();
     }
-  }
   };
 
   const onClickShuffledWordHandler = (e) => {
