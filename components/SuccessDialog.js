@@ -41,17 +41,19 @@ export default function SuccessDialog(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Scramble Stats"}
+          {"Congratulations!"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <Typography variant= 'h6' >
-          Click the stats icon to track your success.
+          You unscrambled it! Click the stats icon to track your success.
           </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={props.handler}>close</Button>
+          <Button autoFocus variant="contained" color="secondary" size="small" onClick={props.handler}>
+            Close
+          </Button>
           {/* <Button onClick={handleClose} autoFocus>
             Agree
           </Button> */}
