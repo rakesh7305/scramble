@@ -34,8 +34,8 @@ function reducer(state, action) {
       const existItem = state.cart.cartItems.find(
         (item) => item._id === newItem._id
       );
-      const cartItems = existItem ? 
-      state.cart.cartItems.map((item) =>
+      const cartItems = existItem ?
+        state.cart.cartItems.map((item) =>
           item.name === existItem.name ? newItem : item
         )
         : [...state.cart.cartItems, newItem];
@@ -95,13 +95,24 @@ function reducer(state, action) {
         const newItem = action.payload;
         // console.log(" before adding stat " + JSON.stringify(state.scrambleStat));
 
-        console.log("new Item " + JSON.stringify(newItem));
-        let oldStat = state.scrambleStat;
+        const existItem = state.scrambleStat.find(
+          (item) => item.gameNo === newItem.gameNo
+        );
+        // console.log("new Item " + JSON.stringify(newItem));
+        let oldStat = {};
+        if (existItem) {
+          oldStat = state.scrambleStat.filter(
+            (item) => item.gameNo !== newItem.gameNo
+          );
+        } else {
+          oldStat = state.scrambleStat;
+        }
+
         oldStat.push(newItem);
         // console.log("after adding stat " + JSON.stringify(oldStat));
 
-        Cookies.set('scrambleStat', JSON.stringify(oldStat ));
-        return { ...state, scrambleStat: { ...oldStat }};
+        Cookies.set('scrambleStat', JSON.stringify(oldStat));
+        return { ...state, scrambleStat: { ...oldStat } };
       }
 
     default:
