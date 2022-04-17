@@ -46,17 +46,17 @@ export default function HelpDialog(props) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Click the letters at the bottom of the board to type in your answer.
-          <p>Click ENTER to submit.</p>
+            <p>Click ENTER to submit.</p>
             <p>MELCRABS is the perfect mix of logic, word vocabulary, and bragging to your friends! In fact, we love scrambling so much, our name is an anagram!</p>
             <p>MELCRABS=SCRAMBLE</p>
-            
+
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={props.handler}>close</Button>
-          {/* <Button onClick={handleClose} autoFocus>
-            Agree
-          </Button> */}
+          {/* <Button autoFocus onClick={props.handler}>close</Button> */}
+          <Button autoFocus variant="contained" color="secondary" size="small" onClick={props.handler}>
+            Close
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
