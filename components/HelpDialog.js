@@ -45,8 +45,10 @@ export default function HelpDialog(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Click the letters at the bottom of the board to type in your answer.
+            Unscramble the letters at the bottom of board to find the answer. A category is provived to narrow it down. 
+            <p>Click the letters to type in your answer, or just use your keyboard.</p>            
             <p>Click ENTER to submit.</p>
+            <p>Be quick! You only have FIVE minutes or the answer will be shown!</p>
             <p>MELCRABS is the perfect mix of logic, word vocabulary, and bragging to your friends! In fact, we love scrambling so much, our name is an anagram!</p>
             <p>MELCRABS=SCRAMBLE</p>
 
