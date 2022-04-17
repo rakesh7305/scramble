@@ -1,27 +1,27 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
-import NextLink from 'next/link';
+// import NextLink from 'next/link';
 import {
   AppBar,
   Toolbar,
   Typography,
   Container,
-  Link,
+  // Link,
   createMuiTheme,
   ThemeProvider,
   CssBaseline,
   Switch,
   // Badge,
-  Button,
-  Menu,
-  MenuItem,
-  Box,
+  // Button,
+  // Menu,
+  // MenuItem,
+  // Box,
   IconButton,
-  Drawer,
-  List,
-  ListItem,
-  Divider,
-  ListItemText,
+  // Drawer,
+  // List,
+  // ListItem,
+  // Divider,
+  // ListItemText,
   Grid,
   // InputBase,
   // FormControl,
@@ -31,29 +31,28 @@ import {
   // TextField,
   // Icon,
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import CancelIcon from '@material-ui/icons/Cancel';
+// import MenuIcon from '@material-ui/icons/Menu';
+// import CancelIcon from '@material-ui/icons/Cancel';
 // import SearchIcon from '@material-ui/icons/Search';
 import useStyles from '../utils/styles';
 import { Store } from '../utils/Store';
-import { getError } from '../utils/error';
+// import { getError } from '../utils/error';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import axios from 'axios';
-import { useEffect } from 'react';
+// import { useSnackbar } from 'notistack';
+// import axios from 'axios';
+// import { useEffect } from 'react';
 import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import StatisticDialog from "../components/StatisticDialog";
 import HelpDialog from "../components/HelpDialog";
 
-
 export default function Layout({ title, description, children }) {
-  const router = useRouter();
+  // const router = useRouter();
   const { state, dispatch } = useContext(Store);
   //const { darkMode, cart, userInfo } = state;
-  const { darkMode, userInfo } = state;
+  const { darkMode } = state;
   const theme = createMuiTheme({
     typography: {
       h1: {
@@ -81,7 +80,7 @@ export default function Layout({ title, description, children }) {
 
 
 
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [showStatModal, setShowStatisticModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
 
@@ -91,10 +90,10 @@ export default function Layout({ title, description, children }) {
     const newDarkMode = !darkMode;
     Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
   };
-  const [anchorEl, setAnchorEl] = useState(null);
-  const loginClickHandler = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
+  // const [anchorEl, setAnchorEl] = useState(null);
+  // const loginClickHandler = (e) => {
+    // setAnchorEl(e.currentTarget);
+  // };
 
   const statisticDialogHandler = () => {
     setShowStatisticModal(false);
@@ -112,50 +111,61 @@ export default function Layout({ title, description, children }) {
         <CssBaseline />
         <AppBar position="static" className={classes.navbar}>
           <Toolbar className={classes.toolbar}>
-          <div>
-          
-          <StatisticDialog
-            show={showStatModal}
-            handler={statisticDialogHandler}
-          >
-          </StatisticDialog>
-          <HelpDialog
-            show={showHelpModal}
-            handler={helpDialogHandler}
-          >
-          </HelpDialog>
-        </div>
+            <div>
+
+              <StatisticDialog
+                show={showStatModal}
+
+                handler={statisticDialogHandler}
+              >
+              </StatisticDialog>
+              <HelpDialog
+                show={showHelpModal}
+                handler={helpDialogHandler}
+              >
+              </HelpDialog>
+            </div>
 
             <Grid container
               direction="row"
               justifyContent="center"
               alignItems="center"
             >
-              <Grid item 
-               xs style={{ display: "flex", justifyContent: "flex-start" }}> 
+              <Grid item
+                xs style={{ display: "flex", justifyContent: "flex-start" }}>
 
+                <img
+                  src={
+                    // "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
+                    "/images/crab_icon.png"
+                  }
+                  alt="Crab Logo"
+                  width="80"
+                  height="43"
+                />
+                {/* <SvgIcon></SvgIcon> */}
                 <Typography className={classes.brand}> MELCRABS</Typography>
               </Grid>
-                    <Grid item>
-            <IconButton
-              aria-label="Help"
-              onClick={() => setShowHelpModal(true)}
-              style={{ color: 'white' }}
-            >
-              <HelpOutlineIcon />
-            </IconButton>
-          </Grid>
               <Grid item>
-            <IconButton
-              aria-label="stat"
-              onClick={() => setShowStatisticModal(true)}
-              style={{ color: 'white' }}
-            >
-              <InsertChartOutlinedIcon />
-            </IconButton>
-          </Grid>
+                <IconButton
+                  aria-label="Help"
+                  onClick={() => setShowHelpModal(true)}
+                  style={{ color: 'white' }}
+                >
+                  <HelpOutlineIcon />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label="stat"
+                  onClick={() => setShowStatisticModal(true)}
+                  style={{ color: 'white' }}
+                >
+                  <InsertChartOutlinedIcon />
+                </IconButton>
+              </Grid>
               <Grid item >
-              {/* xs style={{ display: "flex", justifyContent: "flex-end" }}>  */}
+                {/* xs style={{ display: "flex", justifyContent: "flex-end" }}>  */}
                 <div>
                   <Switch
                     checked={darkMode}
