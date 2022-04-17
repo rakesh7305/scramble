@@ -2,11 +2,10 @@ import * as React from 'react';
 import {
   // List,
   // ListItem,
-  // Typography,
+  Typography,
   // TextField,
   Button,
   // Link,
-  // Grid,
   // Box,
   Dialog,
   DialogActions,
@@ -14,51 +13,42 @@ import {
   DialogContentText,
   DialogTitle,
   Paper,
-} from '@material-ui/core';
+  LinearProgress,
+} from '@mui/material';
 import Cookies from 'js-cookie';
-import {
-  Chart,
-  BarSeries,
-  // Series,
-  Title,
-  ArgumentAxis,
-  ValueAxis,
-  // ConstantLine,
-  // Label,
-  // Tick,
-} from '@devexpress/dx-react-chart-material-ui';
-import { Animation } from '@devexpress/dx-react-chart';
-import { scaleBand, scaleLinear } from '@devexpress/dx-chart-core';
-import { ArgumentScale, ValueScale } from '@devexpress/dx-react-chart';
 
-//import { scaleLinear, scaleTime } from 'd3-scale';
+import { Box } from '@material-ui/core';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { Store } from '../utils/Store';
+import { useContext } from 'react';
+
 
 
 export default function StatisticDialog(props) {
-  // const [open, setOpen] = Rea  ct.useState(props.show);
+  const { state } = useContext(Store);
+  
+  const chartData = Cookies.get('scrambleStat') ? JSON.parse(Cookies.get('scrambleStat')) : [{ "gameNo": "", "time": 0 }];
+  const colorMode = state.darkMode;
+  // bgcolor={colorMode ? 'black' : 'white'}
+  // color: colorMode ? 'white' : '#470404',
 
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-
-  // console.log(props);
-
-  //console.log("in StatModal " + JSON.stringify(props));
-  //const chartData = [{ "gameDate": "March 1", "time": 59 }, { "gameDate": "March 2", "time": 6 }];
-  const chartData = Cookies.get('scrambleStat') ? JSON.parse(Cookies.get('scrambleStat')) : [{ "gameDate": "", "time": 0 }];
-
+  let average = 0, sum = 0;
+  function findAvg () {
+    chartData.map((item) => ( sum += (item.time)));
+    average = sum / chartData.length
+    return average;
+  }
   return (
     <div>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button> */}
+
       <Dialog
         open={props.show}
-        //onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -68,52 +58,49 @@ export default function StatisticDialog(props) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
 
-            <Paper minWidth="1000px" maxHeight='20vh'>
-              <Chart
-                data={chartData}
-                height={300}
-                width={600}
-              // rotated={true}
-              >
-                <ArgumentScale factory={scaleBand} />
-                <ValueScale factory={scaleLinear} />
-                <ArgumentAxis />
-                {/* <ValueAxis maxValueMargin={0.01}> */}
-                <ValueAxis>
-                  {/* <ConstantLine
-                    width={2}
-                    value={45}
-                    color="#8c8cff"
-                    dashStyle="dash"
-                  >
-                    <Label text="Low Average" />
-                  </ConstantLine> */}
-                  {/* <Label visible={true} /> */}
-                </ValueAxis>
-
-                <BarSeries
-                  valueField="time"
-                  argumentField="gameDate"
-                  barWidth={0.1}
-                ></BarSeries>
-                {/* <Series
-                  valueField="time"
-                  argumentField="gameDate"
-                  type="bar"
-                  color="#79cac4"
-                >
-                  <Label visible={true} backgroundColor="#c18e92" />
-                </Series> */}
-                <Title text="Your Record" />
-                <Animation />
-              </Chart>
-            </Paper>
+            <Box minWidth="400px" maxHeight='100vh'>
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 400 }} size="small" aria-label="stat table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell width="30%">Game No.</TableCell>
+                      <TableCell width="60%" align="left">Chart</TableCell>
+                      <TableCell width="10%" align="left">Seconds</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {chartData.map((row) => (
+                      <TableRow
+                      >
+                        <TableCell component="th" scope="row">
+                          {row.gameNo}
+                        </TableCell>
+                        <TableCell align="right">
+                          <LinearProgress
+                            width="100%"
+                            variant="determinate"
+                            value={row.time}
+                            sx={{
+                              height: 20,
+                              }}
+                          />
+                        </TableCell>
+                        <TableCell align="right">{row.time}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Typography variant="h8" color={colorMode ? 'white' : '#470404'}>Average = {findAvg()} seconds</Typography>
+            </Box>
 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={props.handler}>close</Button>
-
+          {/* <Button autoFocus onClick={props.handler}>close</Button> */}
+          <Button autoFocus variant="contained" color="secondary" size="small" onClick={props.handler}>
+                Close
+              </Button>
         </DialogActions>
       </Dialog>
     </div>
