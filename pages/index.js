@@ -458,7 +458,7 @@ export default function Scramble(props) {
                       maxLength: 1,
                       style: {
                         background: colorMode ? 'black' : 'lightgrey',
-                        color: colorMode ? 'white' : '#470404',
+                        color: colorMode ? 'white' : 'black',
                         width: "2ch",
                         wrap: "nowrap",
                         fontSize: 27,
