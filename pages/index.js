@@ -451,6 +451,8 @@ export default function Scramble(props) {
                     autoFocus
                     onChange={ansChangeHandler}
                     onKeyUp={onKeyUpHandler}
+                    onFocus={el => allValues.current[index].style.border = '1px solid #f0c000'}
+                    onBlur={el => allValues.current[index].style.border = '1px solid white'}
                     inputProps={{
                       readOnly: false,
                       maxLength: 1,
