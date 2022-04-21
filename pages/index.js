@@ -160,15 +160,18 @@ export default function Scramble(props) {
     }
   }
   function shiftFocus() {
-    let index = 0;
-    let found = false;
-    allValues.current.forEach((item) => {
-      if (item.value === "" && !found && index < allValues.current.length) {
-        found = true;
-        allValues.current[index].focus();
-      }
-      index++;
-    });
+    if (isActive) {
+
+      let index = 0;
+      let found = false;
+      allValues.current.forEach((item) => {
+        if (item.value === "" && !found && index < allValues.current.length) {
+          found = true;
+          allValues.current[index].focus();
+        }
+        index++;
+      });
+    }
   }
 
   function checkLetter(updatedAnswer) {
@@ -451,8 +454,8 @@ export default function Scramble(props) {
                     autoFocus
                     onChange={ansChangeHandler}
                     onKeyUp={onKeyUpHandler}
-                    onFocus={(el) => {allValues.current[index].style.border = '1px solid #f0c000'; allValues.current[index].style.background = '#00e600'; }}
-                    onBlur={(el) => {allValues.current[index].style.border = '1px solid white'; allValues.current[index].style.background = 'lightgrey'; }}
+                    onFocus={(el) => { if(isActive) {allValues.current[index].style.border = '1px solid #f0c000'; allValues.current[index].style.background = '#0bd8e3'; }}}
+                    onBlur={(el) => { if(isActive) {allValues.current[index].style.border = '1px solid white'; allValues.current[index].style.background = 'lightgrey'; }}}
                     inputProps={{
                       readOnly: false,
                       maxLength: 1,
@@ -468,7 +471,8 @@ export default function Scramble(props) {
                         textTransform: "uppercase",
                         pattern: "[a-z]",
                         border: "1px solid white",
-                      }
+                        position: "relative",
+                  }
                     }}
                   />
                 ))}
