@@ -56,7 +56,7 @@ export default function Scramble(props) {
   let timer = null;
 
   useEffect(() => {
-    // if (!playedGame()) {
+    if (!playedGame()) {
       shiftFocus()
 
       if (seconds > 0) {
@@ -72,11 +72,11 @@ export default function Scramble(props) {
         // setIsActive(false);
       }
       return () => clearInterval(timer);
-    // }
-    // else {
-    //   disableAnswer();
-    //   alert("You have already played this Game. Please check back tomorrow");
-    // }
+    }
+    else {
+      disableAnswer();
+      alert("You have already played this Game. Please check back tomorrow");
+    }
   }, [seconds]);
   // }, [seconds, isActive]);
 
@@ -104,19 +104,19 @@ export default function Scramble(props) {
   }
   const shuffledWord = shuffledWord_init;
 
-  // const playedGame = () => {
-  //   const scrambleStat = state.scrambleStat;
-  //   const gameNo = scrambleGame['gameNo'];
-  //   const item = scrambleStat.find(item => item.gameNo == gameNo);
-  //   if (item) {
-  //     // alert("You have already Played the Game. Please check tomorrow");
-  //     // disableAnswer();
-  //     return true;
-  //   }
-  //   else {
-  //     return false;
-  //   }
-  // }
+  const playedGame = () => {
+    const scrambleStat = state.scrambleStat;
+    const gameNo = scrambleGame['gameNo'];
+    const item = scrambleStat.find(item => item.gameNo == gameNo);
+    if (item) {
+      // alert("You have already Played the Game. Please check tomorrow");
+      // disableAnswer();
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
   
   const saveStat = () => {
     const data = {
