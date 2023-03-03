@@ -1,10 +1,8 @@
 import {
   Typography,
-  // TextField,
   Input,
   Grid,
   Box,
-  // IconButton,
   Button,
 } from '@material-ui/core';
 import React, { useContext, useEffect, useState, useRef } from 'react';
@@ -21,43 +19,34 @@ import SuccessDialog from "../components/SuccessDialog";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 
-// import CancelIcon from '@material-ui/icons/Cancel';
 import moment from 'moment';
-
+import useStyles from '../utils/styles';
 
 
 
 export default function Scramble(props) {
 
   const { enqueueSnackbar } = useSnackbar();
-
   const { state, dispatch } = useContext(Store);
   const [showModal, setShowModal] = useState(false);
   // const [showStatModal, setShowStatisticModal] = useState(false);
   const timerSet = 300;
   const [seconds, setSeconds] = useState(timerSet);
   const [isActive, setIsActive] = useState(true);
+  const [currentGuess, setCurrentGuess] = useState();
+  const [shuffledWord, setShuffledWord] = useState();
+  const [correctWord, setCorrectWord] = useState();
+
   //const [timer, setTimer] = useState();
+  const classes = useStyles();
 
-  // let timer = null;
-  // useEffect(() => {
-  //   document.getElementById("0").focus();
 
-  //   timer = setInterval(() => {
-  //     setSeconds(prevSeconds => prevSeconds + 1);
-  //   }, 1000);
-  //   //setTimer(timer);
-
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-
-  // }, []);
   let timer = null;
+
+  // ****************
 
   useEffect(() => {
     if (!playedGame()) {
-      shiftFocus()
 
       if (seconds > 0) {
         timer = setInterval(() => {
@@ -78,31 +67,74 @@ export default function Scramble(props) {
       alert("You have already played this Game. Please check back tomorrow");
     }
   }, [seconds]);
+  // ****************
   // }, [seconds, isActive]);
+
+  useEffect(() => {
+
+    if (!currentGuess) {
+      var userWord_init = [];
+      for (var i = 0; i < newWord.length; i++) {
+        var item = { "id": i, "letter": "", "checked": false, "responseLetterId": -1, color: "grey" };
+        userWord_init.push(item);
+      }
+      setCurrentGuess(currentGuess => [...userWord_init]);
+
+      if (!shuffledWord) {
+        var shuffledWord_init = [];
+        for (var i = 0; i < newWord.length; i++) {
+          var item = { "id": 100 + i, "letter": newWord[i], "checked": false, "responseLetterId": -1, color: "grey" };
+          shuffledWord_init.push(item);
+        }
+        setShuffledWord(shuffledWord => [...shuffledWord_init]);
+      }
+      if (!correctWord) {
+        var correctWord_init = [];
+        for (var i = 0; i < word.length; i++) {
+          var item = { "id": i, "letter": word[i], "checked": false, "responseLetterId": -1, color: "lightblue" };
+          correctWord_init.push(item);
+        }
+        setCorrectWord(correctWord => [...correctWord_init]);
+      }
+    }
+  }, []);
+
+  const onKeyUpHandler = ({ key }) => {
+
+    if (isActive) {
+
+      if (key === "Backspace") {
+        clickBackspace();
+      }
+
+      else if (/^[A-Za-z]$/.test(key)) {
+        updateKeyResponse(key.toUpperCase());
+      }
+
+      else if (key === 'Enter') {
+        checkAnswer();
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keyup', onKeyUpHandler)
+
+    return () => window.removeEventListener('keyup', onKeyUpHandler)
+  }, [onKeyUpHandler]);
+
+
 
 
   const { scrambleGame } = props;
-
   const word = Array.from(scrambleGame.clue);
-  // const word = Array.from("12345678");
-
   const colorMode = state.darkMode;
-
-  // const classes = useStyles();
-
-
   const rightAnswer = word.join("");
   const allValues = useRef([]);
-
   const newWord = Array.from(scrambleGame.scrambledClue);
-  //const newWord = Array.from("12345678");
 
-  var shuffledWord_init = [];
-  for (var i = 0; i < newWord.length; i++) {
-    var item = { "id": 100 + i, "letter": newWord[i], "checked": false, "responseLetterId": -1 };
-    shuffledWord_init.push(item);
-  }
-  const shuffledWord = shuffledWord_init;
+
+
 
   const playedGame = () => {
     const scrambleStat = state.scrambleStat;
@@ -117,7 +149,7 @@ export default function Scramble(props) {
       return false;
     }
   }
-  
+
   const saveStat = () => {
     const data = {
       gameNo: scrambleGame.gameNo, //moment().format("DD-MMM HH:mm"), //Date.now(),
@@ -136,121 +168,25 @@ export default function Scramble(props) {
 
   function disableAnswer() {
 
-    // for (var i = 0; i < word.length; i++) {
-    //   var id = (i).toString();
-    //   var id100 = (i + 100).toString();
-    //   document.getElementById(id).disabled = true;
-    //   document.getElementById(id100).disabled = true;
-    //   // document.getElementById('EntrBttn').disabled = true;
-    //   // document.getElementById('BkspBttn').disabled = true;
-
-
-    // }
     setIsActive(false);
 
   }
 
   function provideCorrectAnswer() {
-
-    for (var i = 0; i < word.length; i++) {
-      var id = (i).toString();
-      document.getElementById(id).value = word[i];
-      document.getElementById(id).style.background = 'blue';
-      document.getElementById(id).style.color = 'white';
-    }
-  }
-  function shiftFocus() {
-    if (isActive) {
-
-      let index = 0;
-      let found = false;
-      allValues.current.forEach((item) => {
-        if (item.value === "" && !found && index < allValues.current.length) {
-          found = true;
-          allValues.current[index].focus();
-        }
-        index++;
-      });
-    }
-  }
-
-  function checkLetter(updatedAnswer) {
-    shuffledWord.forEach((item) => {
-      item.checked = false;
-      item.responseLetterId = -1;
-      document.getElementById((item.id).toString()).style.background = 'lightgrey';
-      document.getElementById((item.id).toString()).style.color = 'black';
-    });
-
-    // shuffledWord.forEach((item) => {
-    //   let found = false;
-
-    //   for (let val in updatedAnswer) {
-    //     if (item.letter === updatedAnswer[val] && !found) {
-    //       item.checked = true;
-    //       found = true;
-    //       item.responseLetterId = val;
-    //       document.getElementById((item.id).toString()).style.background = '#00e600';
-    //       document.getElementById((item.id).toString()).style.color = 'white';
-    //     }
-    //   }
-    // });
-    for (let i in updatedAnswer) {
-      let found = false;
-      for (let x in shuffledWord) {
-        if (shuffledWord[x].letter === updatedAnswer[i] && !found && !shuffledWord[x].checked) {
-          shuffledWord[x].checked = true;
-          found = true;
-          shuffledWord[x].responseLetterId = i;
-          document.getElementById(shuffledWord[x].id).style.background = '#00e600';
-          document.getElementById(shuffledWord[x].id).style.color = 'white';
-        }
-      }
-    }
-
-
-
-
+    setCurrentGuess(currentGuess => [...correctWord]);
 
   }
 
-  function updateAllValues() {
 
-    if (isActive) {
-      const userAnswer = Array.from({ length: allValues.current.length }, () => "");
-
-      allValues.current.map((item, index) => (
-        userAnswer[index] = (item.value).toUpperCase()
-      )
-      );
-
-      const updatedAnswer = userAnswer;
-
-      checkLetter(updatedAnswer);
-    }
-  }
-
-  // function updateAllValues(val, index) {
-  //   val = index < 0 ? "" : "";
-
-  //   const userAnswer = Array.from({ length: allValues.current.length }, () => "");
-
-  //   allValues.current.map((item, index) => (
-  //     userAnswer[index] = (item.value).toUpperCase()
-  //   )
-  //   );
-
-  //   const updatedAnswer = userAnswer;
-
-  //   checkLetter(updatedAnswer);
-  // }
 
   function checkAnswer() {
     if (isActive) {
-      const userAnswer = Array.from({ length: allValues.current.length }, () => "");
+      // const userAnswer = Array.from({ length: allValues.current.length }, () => "");
 
-      allValues.current.map((item, index) => (userAnswer[index] = (item.value).toUpperCase()));
-      const userResponse = userAnswer.join("");
+      // allValues.current.map((item, index) => (userAnswer[index] = (item.value).toUpperCase()));
+      let userResponse = '';
+
+      currentGuess.map((item) => (userResponse += item.letter));
 
       if (rightAnswer.localeCompare(userResponse.toUpperCase()) === 0) {
         clearInterval(timer);
@@ -268,129 +204,102 @@ export default function Scramble(props) {
     }
   }
 
+
   function clickBackspace() {
     if (isActive) {
-      let index = 0;
+      //setCurrentGuess(prev=> prev.slice(0,-1))
+      let userWord = currentGuess;
       let found = false;
-      allValues.current.forEach((item) => {
-        if (item.value === "" && !found && index > 0) {
+      let letterRemoved = '';
+      userWord.forEach((l, i) => {
+        if (l.letter === "" && !found && i > 0) {
+          letterRemoved = userWord[i - 1].letter;
+          userWord[i - 1].letter = "";
           found = true;
-          allValues.current[index - 1].value = '';
-          updateAllValues();
-          allValues.current[index - 1].focus();
-          // e.target.style.background = '#00e600';
-          // e.target.style.color = 'white';
+        } else if (i === userWord.length - 1 && !found) {
+          letterRemoved = userWord[userWord.length - 1].letter;
+          userWord[userWord.length - 1].letter = "";
+          found = true;
         }
-        else if (index === allValues.current.length - 1 && !found) {
-          allValues.current[allValues.current.length - 1].value = '';
-          updateAllValues();
-          allValues.current[allValues.current.length - 1].focus();
-        }
-        index++;
-      });
-    }
-  };
+      })
 
-
-  const ansChangeHandler = (e) => {
-    if (isActive) {
-      const letterValue = (e.target.value).toUpperCase();
-
-      const currentId = parseInt(e.target.id);
-
-      if (!letterValue.match(/[A-Z]/)) {
-        e.target.value = "";
-        // updateAllValues(letterValue, currentId);
-        updateAllValues();
-      } else {
-        if (currentId < word.length - 1) {
-          document.getElementById((currentId + 1).toString()).focus();
-        }
-        // updateAllValues(letterValue, currentId);
-        updateAllValues();
+      if (found && letterRemoved != '') {
+        found = false;
+        shuffledWord.forEach((l, i) => {
+          if (l.letter === letterRemoved && l.color === 'green' && !found) {
+            shuffledWord[i].color = 'grey'
+            found = true;
+          }
+        })
       }
+      setCurrentGuess(currentGuess => [...userWord]);
+      setShuffledWord(shuffledWord => [...shuffledWord]);
+
     }
   };
+
+
+  function updateKeyResponse(letterValue) {
+    if (isActive) {
+      let letterMarked = false;
+      let sWord = shuffledWord;
+      sWord.forEach((l, i) => {
+        if (l.letter === letterValue && l.color !== 'green' && !letterMarked) {
+          sWord[i].color = 'green'
+          letterMarked = true;
+        }
+      })
+
+      if (letterMarked) {
+        setShuffledWord(shuffledWord => [...sWord]);
+        let userWord = currentGuess;
+        let found = false;
+        userWord.forEach((l, i) => {
+          if (l.letter === "" && !found) {
+            userWord[i].letter = letterValue;
+            found = true;
+          }
+        })
+        setCurrentGuess(currentGuess => [...userWord]);
+      }
+
+    }
+  }
+
+  function updateClickResponse(letterValue, id) {
+    if (isActive) {
+      let letterMarked = false;
+      let sWord = shuffledWord;
+      sWord.forEach((l, i) => {
+        if (l.letter === letterValue && l.color !== 'green' && !letterMarked && id === l.id) {
+          sWord[i].color = 'green'
+          letterMarked = true;
+        }
+      })
+
+      if (letterMarked) {
+        setShuffledWord(shuffledWord => [...sWord]);
+        let userWord = currentGuess;
+        let found = false;
+        userWord.forEach((l, i) => {
+          if (l.letter === "" && !found) {
+            userWord[i].letter = letterValue;
+            found = true;
+          }
+        })
+        setCurrentGuess(currentGuess => [...userWord]);
+      }
+
+    }
+  }
 
   const onClickShuffledWordHandler = (e) => {
-    const letterValue = (e.target.value).toUpperCase();
-    console.log("on click event: " + letterValue);
+    const letterValue = (e.target.innerText).toUpperCase();
     const i = parseInt(e.target.id);
-    console.log("on click event: " + shuffledWord[i - 100].checked);
-    console.log("on click event: " + e.target.style.backgroundColor);
+    allValues.current[i - 100] = letterValue;
 
-
-    // allValues.current.map((item, index) => (
-    //   if (item.value === "") {
-    //     document.getElementById((index).toString()).innerText = letterValue;
-    //   }
-    // )
-    // )
-    let index = 0;
-    let found = false;
-    if (e.target.style.backgroundColor === 'lightgrey') {
-      allValues.current.forEach((item) => {
-        if (item.value === "" && !found) {
-          item.value = letterValue;
-          shuffledWord[i - 100].checked = true;
-          e.target.style.background = '#00e600';
-          e.target.style.color = 'white';
-          found = true;
-        }
-        index++;
-
-      });
-    }
-    updateAllValues();
+    updateClickResponse(letterValue.toUpperCase(), i);
   };
-
-  const onKeyUpHandler = (e) => {
-    // console.log("on key up event: " + event.which);
-    if (isActive) {
-      if (event.which === 8) {
-        const currentId = event.target.id;
-        //checkLetter();
-        event.target.value = "";
-        const prevId = (currentId - 1).toString();
-        if (currentId > 0) {
-          //allValues.current[index-1].focus()
-          document.getElementById(prevId).focus();
-          //document.getElementById(prevId).select();
-          // updateAllValues("", currentId);
-          updateAllValues();
-
-        } else if (currentId === 0) {
-          console.log("backspae " + currentId + " " + allValues.current[currentId].value)
-          // updateAllValues("", currentId);
-          updateAllValues();
-
-        }
-      }
-      else if (event.which === 13) {
-        checkAnswer();
-      }
-    }
-  };
-
-
-  // function shuffle(array) {
-  //   var copy = [], n = array.length, i;
-
-  //   // While there remain elements to shuffle…
-  //   while (n) {
-
-  //     // Pick a remaining element…
-  //     i = Math.floor(Math.random() * array.length);
-
-  //     // If not already shuffled, move it to the new array.
-  //     if (i in array) {
-  //       copy.push(array[i]);
-  //       delete array[i];
-  //       n--;
-  //     }
-  //   }
-  //   return copy;
-  // }
 
   return (
     <Layout title="Scramble">
@@ -405,23 +314,7 @@ export default function Scramble(props) {
           >
           </SuccessDialog>
         </div>
-        {/* <Grid container
-          // direction="row"
-          display="flex"
-          justifyContent="flex-end"
-          alignItems="center"
-        // style={{ minHeight: "5vh" }}
-        >
-          <Grid item>
-            <IconButton
-              aria-label="stat"
-              onClick={() => setShowStatisticModal(true)}
-            >
-              <InsertChartOutlinedIcon />
-            </IconButton>
-          </Grid>
 
-        </Grid> */}
         <Box
           component="form"
           sx={{
@@ -434,102 +327,62 @@ export default function Scramble(props) {
           autoComplete="off"
           bgcolor={colorMode ? 'black' : 'white'}
         >
-          <Grid container spacing={2}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            textAlign="center" >
-            <Grid item >
-              {shuffledWord &&
-                shuffledWord.map((letter, index) => (
-                  <Input
-                    id={index.toString()}
-                    key={index}
-                    //defaultValue=""
-                    inputRef={el => allValues.current[index] = el}
-                    //ref={allValues[index]}
-                    variant="outlined"
-                    disabled={!isActive}
-                    // disablePointerEvents={true}
-                    autoFocus
-                    onChange={ansChangeHandler}
-                    onKeyUp={onKeyUpHandler}
-                    onFocus={(el) => { if(isActive) {allValues.current[index].style.border = '1px solid #f0c000'; allValues.current[index].style.background = '#0bd8e3'; }}}
-                    onBlur={(el) => { if(isActive) {allValues.current[index].style.border = '1px solid white'; allValues.current[index].style.background = 'lightgrey'; }}}
-                    inputProps={{
-                      readOnly: false,
-                      maxLength: 1,
-                      style: {
-                        background: colorMode ? 'black' : 'lightgrey',
-                        color: colorMode ? 'white' : 'black',
-                        width: "2ch",
-                        wrap: "nowrap",
-                        fontSize: 27,
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        // pl: 20,
-                        textTransform: "uppercase",
-                        pattern: "[a-z]",
-                        border: "1px solid white",
-                        position: "relative",
-                  }
-                    }}
-                  />
-                ))}
 
-            </Grid>
-          </Grid>
-
+          <Box
+            // className={classes.nrow}
+            textAlign='center'
+            display='flex'
+            justifyContent='center'
+          >
+            {currentGuess &&
+              currentGuess.map((item) => (
+                <Box className={classes.letterbox}
+                  id={item.id}
+                  key={item.id}
+                  disabled={!isActive}
+                  bgcolor={item.color}
+                //     background: colorMode ? 'black' : 'lightgrey',
+                //     color: colorMode ? 'white' : 'black',
+                >{item.letter}</Box>
+              ))}
+          </Box>
           <Grid container
             direction="column"
             justifyContent="center"
             alignItems="center"
             style={{ minHeight: "20vh" }}
           >
-            <Grid item
-            >
+            <Grid item>
               <Typography variant='h4' fontFamily='Segoe UI'>{scrambleGame.category}</Typography>
             </Grid>
           </Grid>
-          <Grid container spacing={2}
-            direction="row"
-            // width="100%"
-            justifyContent="center"
-            alignItems="center"
-            textAlign="center" >
-            <Grid item>
+          <div>
+            <Box
+              // className={classes.nrow}
+              textAlign='center'
+              display='flex'
+              justifyContent='center'
+            >
               {shuffledWord &&
                 shuffledWord.map((item) => (
-                  <Input
+                  <Box className={classes.letterbox}
+                    // <Box className={`${classes.letterbox} ${classes.green}`}
                     id={(item.id).toString()}
                     key={item.id}
                     defaultValue={item.letter}
-                    variant="outlined"
                     disabled={!isActive}
-                    // disablePointerEvents={true}
                     onClick={onClickShuffledWordHandler}
-                    inputProps={{
-                      readOnly: true,
-                      style: {
-                        background: colorMode ? 'black' : 'lightgrey',
-                        color: colorMode ? 'white' : 'black',
-                        width: "2ch",
-                        wrap: "nowrap",
-                        fontSize: 27,
-                        // background: "white",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        border: "1px solid white",
-                        // m: 2,
-                        // p: 2,
-                      }
-                    }}
-                  />
+                    bgcolor={item.color}
+                    color={(item.color === 'green')
+                      ? 'white' : (item.color !== 'green' && colorMode) ? 'white' : 'black'}
+                  // background={colorMode} ? 'black' : 'lightgrey'
+                  // color={ colorMode } ? 'white' : 'black'
+                  > {item.letter} </Box>
 
                 ))}
 
-            </Grid>
-          </Grid>
+            </Box>
+          </div>
           <Grid container
             direction="column"
             justifyContent="center"
@@ -539,7 +392,6 @@ export default function Scramble(props) {
             <Grid item
             >
               <Typography id='clock' variant='h6' fontFamily='Segoe UI'>{Math.floor(seconds / 60) < 10 ? "0" + (Math.floor(seconds / 60)).toString() : Math.floor(seconds / 60)}:{seconds % 60 < 10 ? "0" + (seconds % 60).toString() : seconds % 60}</Typography>
-              {/* <Typography id='clock' ref={clockRef} variant='h6' fontFamily='Segoe UI'></Typography> */}
             </Grid>
             <Grid item
             >
@@ -568,8 +420,8 @@ export default function Scramble(props) {
             </Grid>
           </Grid>
         </Box>
-      </Grid>
-    </Layout>
+      </Grid >
+    </Layout >
   );
 }
 export async function getServerSideProps() {

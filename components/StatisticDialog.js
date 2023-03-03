@@ -62,7 +62,7 @@ export default function StatisticDialog(props) {
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 400 }} size="small" aria-label="stat table">
                   <TableHead>
-                    <TableRow>
+                    <TableRow key="1">
                       <TableCell width="30%">Game No.</TableCell>
                       <TableCell width="60%" align="left">Chart</TableCell>
                       <TableCell width="10%" align="left">Seconds</TableCell>
@@ -70,7 +70,7 @@ export default function StatisticDialog(props) {
                   </TableHead>
                   <TableBody>
                     {chartData.map((row) => (
-                      <TableRow
+                      <TableRow key="2"
                       >
                         <TableCell component="th" scope="row">
                           {row.gameNo}

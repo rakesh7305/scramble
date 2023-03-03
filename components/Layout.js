@@ -31,6 +31,7 @@ import {
   // TextField,
   // Icon,
 } from '@material-ui/core';
+import { createTheme } from '@material-ui/core/styles';
 // import MenuIcon from '@material-ui/icons/Menu';
 // import CancelIcon from '@material-ui/icons/Cancel';
 // import SearchIcon from '@material-ui/icons/Search';
@@ -53,7 +54,7 @@ export default function Layout({ title, description, children }) {
   const { state, dispatch } = useContext(Store);
   //const { darkMode, cart, userInfo } = state;
   const { darkMode } = state;
-  const theme = createMuiTheme({
+  const theme = createTheme({
     typography: {
       h1: {
         fontSize: '1.6rem',

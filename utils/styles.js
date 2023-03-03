@@ -1,4 +1,5 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
@@ -89,6 +90,29 @@ const useStyles = makeStyles((theme) => ({
       color: '#606060',
     },
   },
+  nrow: {
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  letterbox: {
+    display: 'block',
+    width: '40px',
+    height: '40px',
+    border: '1px solid #bbb',
+    margin: '2px',
+    textAlign: 'center',
+    lineHeight: '40px',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    fontSize: '2.0em',
+    // backgroundColor: '#00e600',
+
+  },
+  green:{
+    backgroundColor: '#00e600',
+  },
+
   iconButton: {
     backgroundColor: '#f8c040',
     size: 'large',
