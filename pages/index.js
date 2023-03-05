@@ -58,6 +58,7 @@ export default function Scramble(props) {
         clearInterval(timer);
         provideCorrectAnswer();
         disableAnswer();
+        saveStat();
         // setIsActive(false);
       }
       return () => clearInterval(timer);
