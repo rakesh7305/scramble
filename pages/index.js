@@ -428,7 +428,7 @@ export default function Scramble(props) {
 export async function getServerSideProps() {
   //const { params } = context;
   //const gameDate = new Date("2022-03-14");
-  const gameDate = moment().format("YYYY-MM-DD");
+  const gameDate = moment().add(-5,"hour").format("YYYY-MM-DD");
 
   await db.connect();
   const scrambleGame1 = await ScrambleGame.findOne({ gameDate }).lean();
