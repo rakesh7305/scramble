@@ -3,6 +3,7 @@ import { SnackbarProvider } from 'notistack';
 import { useEffect } from 'react';
 import '../styles/globals.css';
 import { StoreProvider } from '../utils/Store';
+import { Analytics } from '@vercel/analytics/react';
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }) {
       <StoreProvider>
         {/* <PayPalScriptProvider deferLoading={true}> */}
           <Component {...pageProps} />
+          <Analytics />
         {/* </PayPalScriptProvider> */}
       </StoreProvider>
     </SnackbarProvider>
