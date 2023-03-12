@@ -38,7 +38,7 @@ export default function Share(props) {
     if (navigator.share) {
       navigator.share({
         title: 'melcrabs',
-        text: `I finsihed melcrabs in ${props.seconds} seconds`,
+        text: `I finished melcrabs in ${props.seconds} seconds !!`,
         url: 'https://www.melcrabs.com',
       })
         .then(() => console.log('Successful share'))
