@@ -18,10 +18,8 @@ import SuccessDialog from "../components/SuccessDialog";
 // import InsertChartOutlinedIcon from '@material-ui/icons/InsertChartOutlined';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-
 import moment from 'moment';
 import useStyles from '../utils/styles';
-
 
 
 export default function Scramble(props) {
@@ -36,7 +34,8 @@ export default function Scramble(props) {
   const [currentGuess, setCurrentGuess] = useState();
   const [shuffledWord, setShuffledWord] = useState();
   const [correctWord, setCorrectWord] = useState();
-
+  const [answerTime, setAnswerTime] = useState(0);
+  
   //const [timer, setTimer] = useState();
   const classes = useStyles();
 
@@ -47,7 +46,6 @@ export default function Scramble(props) {
 
   useEffect(() => {
     if (!playedGame()) {
-
       if (seconds > 0) {
         timer = setInterval(() => {
           setSeconds(seconds => seconds - 1);
@@ -192,8 +190,9 @@ export default function Scramble(props) {
       if (rightAnswer.localeCompare(userResponse.toUpperCase()) === 0) {
         clearInterval(timer);
         disableAnswer();
-        const answerTime = (Math.floor(seconds / 60) < 10 ? "0" + (Math.floor(seconds / 60)).toString() : Math.floor(seconds / 60)) + ":" + (seconds % 60 < 10 ? "0" + (seconds % 60).toString() : seconds % 60);
-        document.getElementById('clock').innerText = answerTime;
+        const ansTime = (Math.floor(seconds / 60) < 10 ? "0" + (Math.floor(seconds / 60)).toString() : Math.floor(seconds / 60)) + ":" + (seconds % 60 < 10 ? "0" + (seconds % 60).toString() : seconds % 60);
+        document.getElementById('clock').innerText = ansTime;
+        setAnswerTime(timerSet - seconds);
         const msg = "CORRECT !! " + (timerSet - seconds) + " seconds";
         enqueueSnackbar(msg, { variant: 'success' });
         document.getElementById('message').innerText = "You got it in " + (timerSet - seconds) + " seconds";
@@ -312,6 +311,8 @@ export default function Scramble(props) {
           <SuccessDialog
             show={showModal}
             handler={successDialogHandler}
+            shuffledWord={newWord}
+            seconds={answerTime} 
           >
           </SuccessDialog>
         </div>
@@ -428,7 +429,7 @@ export default function Scramble(props) {
 export async function getServerSideProps() {
   //const { params } = context;
   //const gameDate = new Date("2022-03-14");
-  const gameDate = moment().add(-5,"hour").format("YYYY-MM-DD");
+  const gameDate = moment().add(-5, "hour").format("YYYY-MM-DD");
 
   await db.connect();
   const scrambleGame1 = await ScrambleGame.findOne({ gameDate }).lean();

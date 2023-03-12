@@ -346,35 +346,111 @@ const data = {
     },
   ],
   scrambleGame: [
-    
     {
-      gameNo: 1,
-      gameDate: new Date("2022-04-05"),
-      category: 'Science',
-      clue: 'DENSITY',
-      scrambledClue: 'ETYDSNI',
+      "gameNo": 14,
+      "gameDate": "2023-03-02",
+      "category": "ANIMAL",
+      "clue": "AXOLOTL",
+      "scrambledClue": "OTXAOLL"
     },
     {
-      gameNo: 2,
-      gameDate: new Date("2022-04-06"),
-      category: 'Geography',
-      clue: 'EVEREST',
-      scrambledClue: 'REEVETS',
+      "gameNo": 15,
+      "gameDate": "2023-03-03",
+      "category": "BRAND",
+      "clue": "SUBARU",
+      "scrambledClue": "UBUSRA"
     },
     {
-      gameNo: 3,
-      gameDate: new Date("2022-04-07"),
-      category: 'MATH',
-      clue: 'PARABOLA',
-      scrambledClue: 'ALOBAPRA',
+      "gameNo": 16,
+      "gameDate": "2023-03-04",
+      "category": "BRAND",
+      "clue": "LACOSTE",
+      "scrambledClue": "OATLCES"
     },
     {
-      gameNo: 4,
-      gameDate: new Date("2022-04-08"),
-      category: 'LEADER',
-      clue: 'CHURCHILL',
-      scrambledClue: 'CRULILHCH',
+      "gameNo": 17,
+      "gameDate": "2023-03-05",
+      "category": "MATH",
+      "clue": "DECIMAL",
+      "scrambledClue": "ALCEMID"
     },
-  ],
+    {
+      "gameNo": 18,
+      "gameDate": "2023-03-06",
+      "category": "COUNTRY",
+      "clue": "ALBANIA",
+      "scrambledClue": "NILAABA"
+    },
+    {
+      "gameNo": 19,
+      "gameDate": "2023-03-07",
+      "category": "CITY",
+      "clue": "BRISBANE",
+      "scrambledClue": "RIBSNEAB"
+    },
+    {
+      "gameNo": 20,
+      "gameDate": "2023-03-08",
+      "category": "BIRD",
+      "clue": "VULTURE",
+      "scrambledClue": "ULVTUER"
+    },
+    {
+      "gameNo": 21,
+      "gameDate": "2023-03-09",
+      "category": "SINGER",
+      "clue": "BEYONCE",
+      "scrambledClue": "EYONBEC"
+    },
+    {
+      "gameNo": 22,
+      "gameDate": "2023-03-10",
+      "category": "FOOD",
+      "clue": "LASAGNA",
+      "scrambledClue": "GANASLA"
+    },
+    {
+      "gameNo": 23,
+      "gameDate": "2023-03-11",
+      "category": "HOUSEHOLD ITEM",
+      "clue": "BLENDER",
+      "scrambledClue": "NDERBEL"
+    },
+    {
+      "gameNo": 24,
+      "gameDate": "2023-03-12",
+      "category": "FOOD BRAND",
+      "clue": "DORITOS",
+      "scrambledClue": "OITRSOD"
+    },
+    {
+      "gameNo": 25,
+      "gameDate": "2023-03-13",
+      "category": "PLANT",
+      "clue": "BAMBOO",
+      "scrambledClue": "BOMBAO"
+    },
+    {
+      "gameNo": 26,
+      "gameDate": "2023-03-14",
+      "category": "HISTORICAL PEOPLE",
+      "clue": "MONTEZUMA",
+      "scrambledClue": "MNEZMAUOT"
+    },
+    {
+      "gameNo": 27,
+      "gameDate": "2023-03-15",
+      "category": "NFL TEAM",
+      "clue": "RAIDERS",
+      "scrambledClue": "DAIRRSE"
+    },
+    {
+      "gameNo": 28,
+      "gameDate": "2023-03-16",
+      "category": "FAMOUS AUTHOR",
+      "clue": "ORWELL",
+      "scrambledClue": "LEWROL"
+    }
+   ],
 };
 export default data;

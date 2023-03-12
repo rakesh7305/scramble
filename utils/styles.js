@@ -74,8 +74,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 5,
   },
   photo: {
-    height: 300 ,
-    width: 300 ,
+    height: 300,
+    width: 300,
   },
 
   searchInput: {
@@ -109,10 +109,23 @@ const useStyles = makeStyles((theme) => ({
     // backgroundColor: '#00e600',
 
   },
-  green:{
+  green: {
     backgroundColor: '#00e600',
   },
-
+  share: {
+    position: 'fixed',
+    bottom: '25px',
+    right: '25px',
+    cursor: 'pointer',
+    height: '40px',
+    width: '40px',
+    borderRadius: '50%',
+    padding: '5px',
+    // backgroundColor: rgb(43, 135, 255),
+    // -webkit - box - shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75),
+    // -moz - box - shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75),
+    // box - shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75),
+  },
   iconButton: {
     backgroundColor: '#f8c040',
     size: 'large',

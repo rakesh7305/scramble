@@ -14,6 +14,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core';
+import Share from '../components/Share'
 
 
 export default function SuccessDialog(props) {
@@ -44,13 +45,14 @@ export default function SuccessDialog(props) {
           {"Congratulations!"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <Typography variant= 'h6' >
-          You unscrambled it! Click the stats icon to track your success.
-          </Typography>
+          <DialogContentText id="alert-dialog-description" component={'span'}>
+            <Typography variant='h6' >
+              You unscrambled in {props.seconds} seconds! Click the stats icon to track your success.
+            </Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+          <Share shuffledWord={props.newWord} seconds={props.seconds} ></Share>
           <Button autoFocus variant="contained" color="secondary" size="small" onClick={props.handler}>
             Close
           </Button>
