@@ -450,7 +450,126 @@ const data = {
       "category": "FAMOUS AUTHOR",
       "clue": "ORWELL",
       "scrambledClue": "LEWROL"
-    }
+    },
+    {
+      "gameNo": 29,
+      "gameDate": "2023-03-17",
+      "category": "BIRD",
+      "clue": "CANARY",
+      "scrambledClue": "AAYCNR"
+    },
+    {
+      "gameNo": 30,
+      "gameDate": "2023-03-18",
+      "category": "MUSIC",
+      "clue": "SONATA",
+      "scrambledClue": "OTSAAN"
+    },
+    {
+      "gameNo": 31,
+      "gameDate": "2023-03-19",
+      "category": "SPORTS",
+      "clue": "BADMINTON",
+      "scrambledClue": "ADMBNNOIT"
+    },
+    {
+      "gameNo": 32,
+      "gameDate": "2023-03-20",
+      "category": "COUNTRY",
+      "clue": "BOLIVIA",
+      "scrambledClue": "IBAIVLO"
+    },
+    {
+      "gameNo": 33,
+      "gameDate": "2023-03-21",
+      "category": "MATH",
+      "clue": "EQUATION",
+      "scrambledClue": "NEUQOTIA"
+    },
+    {
+      "gameNo": 34,
+      "gameDate": "2023-03-22",
+      "category": "EUROPEAN CITY",
+      "clue": "EDINBURG",
+      "scrambledClue": "IENUBDRG"
+    },
+    {
+      "gameNo": 35,
+      "gameDate": "2023-03-23",
+      "category": "WORLD LEADER",
+      "clue": "MANDELA",
+      "scrambledClue": "LDEAAMN"
+    },
+    {
+      "gameNo": 36,
+      "gameDate": "2023-03-24",
+      "category": "HISTORICAL FIGURE",
+      "clue": "JEFFERSON",
+      "scrambledClue": "OSFJERFNE"
+    },
+    {
+      "gameNo": 37,
+      "gameDate": "2023-03-25",
+      "category": "DISNEY CHARACTER",
+      "clue": "RAPUNZEL",
+      "scrambledClue": "LRZAUEPN"
+    },
+    {
+      "gameNo": 38,
+      "gameDate": "2023-03-26",
+      "category": "GEOGRAPHY",
+      "clue": "DENALI",
+      "scrambledClue": "LDINEA"
+    },
+    {
+      "gameNo": 39,
+      "gameDate": "2023-03-27",
+      "category": "DEPARTMENT STORE",
+      "clue": "STAPLES",
+      "scrambledClue": "LTPSESA"
+    },
+    {
+      "gameNo": 40,
+      "gameDate": "2023-03-28",
+      "category": "RIVER",
+      "clue": "EUPHRATES ",
+      "scrambledClue": "HEAPU STER"
+    },
+    {
+      "gameNo": 41,
+      "gameDate": "2023-03-29",
+      "category": "US CITY",
+      "clue": "ANAHEIM",
+      "scrambledClue": "HAAIMEN"
+    },
+    {
+      "gameNo": 42,
+      "gameDate": "2023-03-30",
+      "category": "ANIMAL",
+      "clue": "ORANGUTAN",
+      "scrambledClue": "OGNAATURN"
+    },
+    {
+      "gameNo": 43,
+      "gameDate": "2023-03-31",
+      "category": "BODY PART",
+      "clue": "PANCREAS",
+      "scrambledClue": "NSRAAECP"
+    },
+    {
+      "gameNo": 44,
+      "gameDate": "2023-04-01",
+      "category": "HOUSEHOLD ITEM",
+      "clue": "BOOKSHELF",
+      "scrambledClue": "OHSKEBOFL"
+    },
+    {
+      "gameNo": 45,
+      "gameDate": "2023-04-02",
+      "category": "BRAND",
+      "clue": "COLGATE",
+      "scrambledClue": "OLCTEAG"
+    },
    ],
 };
 export default data;
